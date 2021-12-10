@@ -27,7 +27,7 @@ def sample_run_report(property_id="263279665"):
     request = RunReportRequest(
         property=f"properties/{property_id}",
         metrics=[Metric(name="activeUsers")],
-        date_ranges=[DateRange(start_date="2021-12-09", end_date="today")],
+        date_ranges=[DateRange(start_date="2021-11-25", end_date="today")],
     )
     response = client.run_report(request)
 
