@@ -44,10 +44,21 @@ def activeUserReport(property_id="263279665"):
     # prints results
     print("Michael result:")
     for row in response.rows:
+        global numViews
         numViews = row.metric_values[0].value
         print(numViews)
 
 
+usersTable = pd.DataFrame(columns=["Date", "NumUsers"])
+
 # Runs the file
 if __name__ == "__main__":
     activeUserReport()
+
+usersTable = usersTable.append(
+    {"Date": "12/12/2021", "NumUsers": numViews}, ignore_index=True
+)
+
+print(usersTable)
+
+print("hello")
