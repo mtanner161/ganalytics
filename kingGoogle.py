@@ -14,6 +14,7 @@ import numpy as np
 import os
 import json
 import requests
+import matplotlib.pyplot as plt
 
 
 # intializes the Google Cloud Client
@@ -37,7 +38,7 @@ def activeUserReport(property_id="263279665"):
     request = RunReportRequest(
         property=f"properties/{property_id}",
         metrics=[Metric(name="activeUsers")],
-        date_ranges=[DateRange(start_date="2021-11-25", end_date="today")],
+        date_ranges=[DateRange(start_date="1daysAgo", end_date="today")],
     )
     response = client.run_report(request)
 
@@ -49,16 +50,24 @@ def activeUserReport(property_id="263279665"):
         print(numViews)
 
 
-usersTable = pd.DataFrame(columns=["Date", "NumUsers"])
+# brings in legacy data (if you do not have any, skip this step)
+legacyDailyViews = pd.read_csv(
+    r"C:\Users\MichaelTanner\Documents\code_doc\king\ganalytics\cleanUserBetter.csv"
+)
+
+# creates an empty DataFrame to hold data
+legacyDailyViews.columns = ["Date", "Users"]
 
 # Runs the file
 if __name__ == "__main__":
     activeUserReport()
 
-usersTable = usersTable.append(
-    {"Date": "12/12/2021", "NumUsers": numViews}, ignore_index=True
+legacyDailyViews = legacyDailyViews.append(
+    {"Date": "12/12/2021", "Users": numViews}, ignore_index=True
 )
 
-print(usersTable)
+legacyDailyViews.to_csv("./king/ganalytics/cleanUserBetter.csv", index=False)
+
+print(legacyDailyViews)
 
 print("hello")
